@@ -1,9 +1,153 @@
 ﻿@page "/"
+@using System.ComponentModel;
 
-<PageTitle>Index</PageTitle>
+<style>
+    th, td {
+        padding: 5px;
+    }
+</style>
 
-<h1>Hello, world!</h1>
+<PageTitle>Cindra</PageTitle>
 
-Welcome to your new app.
+<EditForm Model="model">
+    <table>
+        <tr>
+            <td>1st card</td>
+            <td>
+                <InputSelect class="form-select"
+                             TValue="string"
+                             Value="model.Card1"
+                             ValueChanged="HandleCard1"
+                             ValueExpression="@(() => model.Card1)">
+                    <option>@string.Empty</option>
+                    @foreach (var card in CardOptions)
+                    {
+                        <option>@card</option>
+                    }
+                </InputSelect>
+            </td>
+        </tr>
+        <tr>
+            <td>2nd card</td>
+            <td>
+                <InputSelect class="form-select"
+                             TValue="string"
+                             Value="model.Card2"
+                             ValueChanged="HandleCard2"
+                             ValueExpression="@(() => model.Card2)">
+                    <option>@string.Empty</option>
+                    @foreach (var card in CardOptions)
+                    {
+                        <option>@card</option>
+                    }
+                </InputSelect>
+            </td>
+        </tr>
+        <tr>
+            <td>3rd card</td>
+            <td>
+                <InputSelect class="form-select"
+                             TValue="string"
+                             Value="model.Card3"
+                             ValueChanged="HandleCard3"
+                             ValueExpression="@(() => model.Card3)">
+                    <option>@string.Empty</option>
+                    @foreach (var card in CardOptions)
+                    {
+                        <option>@card</option>
+                    }
+                </InputSelect>
+            </td>
+        </tr>
+        <tr>
+            <td>4th card</td>
+            <td>
+                <InputSelect class="form-select"
+                             TValue="string"
+                             Value="model.Card4"
+                             ValueChanged="HandleCard4"
+                             ValueExpression="@(() => model.Card4)">
+                    <option>@string.Empty</option>
+                    @foreach (var card in CardOptions)
+                    {
+                        <option>@card</option>
+                    }
+                </InputSelect>
+            </td>
+        </tr>
+    </table>
+</EditForm>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<div>
+    <p><h3>Result: @model.Result</h3></p>
+</div>
+
+@code {
+    Model model = new Model();
+
+    private void UpdateResult()
+    {
+        model.Result = Calculator.GetResult(model.GetCards()).OverallMax;
+    }
+
+    private void HandleCard1(string? c)
+    {
+        model.Card1 = c;
+        UpdateResult();
+    }
+
+    private void HandleCard2(string? c)
+    {
+        model.Card2 = c;
+        UpdateResult();
+    }
+
+    private void HandleCard3(string? c)
+    {
+        model.Card3 = c;
+        UpdateResult();
+    }
+
+    private void HandleCard4(string? c)
+    {
+        model.Card4 = c;
+        UpdateResult();
+    }
+
+    public class Model
+    {
+        public string? Card1 { get; set; }
+        public string? Card2 { get; set; }
+        public string? Card3 { get; set; }
+        public string? Card4 { get; set; }
+        public int Result { get; set; } = 0;
+
+        public IEnumerable<Card> GetCards() 
+        {
+            if (Card1 != null) 
+            {
+                yield return new Card(Card1);
+            }
+            if (Card2 != null) 
+            {
+                yield return new Card(Card2);
+            }
+            if (Card3 != null) 
+            {
+                yield return new Card(Card3);
+            }
+            if (Card4 != null) 
+            {
+                yield return new Card(Card4);
+            }
+        }
+    }
+
+    string[] CardOptions = new[]
+    {
+        new Card(3, 0, 1, true).ToString(),
+        new Card(2, 0, 2, true).ToString(),
+        new Card(1, 0, 3, true).ToString(),
+        new Card(4, 1, 1, true).ToString(),
+    };
+}

@@ -20,10 +20,12 @@
             //}
 
             OverallMax = validTurns.Max(t => t.GetDamage());
+            BestTurn = validTurns.First(t => t.GetDamage() == OverallMax).ToString();
         }
 
         public int[][] StartEnd { get; }
         //public int OverallMax => StartEnd.SelectMany(rec => rec).Max();
         public int OverallMax { get; }
+        public string BestTurn { get; }
     }
 }

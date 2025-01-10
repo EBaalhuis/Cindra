@@ -15,6 +15,11 @@
             DaggersAtEndOfTurn = daggersAtEnd;
         }
 
+        public override string ToString()
+        {
+            return string.Join(", ", Moves.Select(m => m.ToString()));
+        }
+
         public int GetDamage()
         {
             return Moves.Sum(a => GetDamage(a));

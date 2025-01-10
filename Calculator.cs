@@ -30,14 +30,7 @@
                                 .GetDamage();
                             if (maxPossibleWithMoves < maxSoFar) continue;
 
-                            var movesAvailable = moves
-                                .Where(m => m != Move.PitchCard1 && m != Move.PitchCard2 && m != Move.PitchCard3 && m != Move.PitchCard4)
-                                .ToList();
-                            var initialResource = moves.Sum(m => GetPitch(cards, m));
-                            var data = new ValidTurnsData(movesAvailable: movesAvailable, resources: initialResource, movesSoFar: new List<Move>(), 
-                                daggersOffChain: daggersAtStart, daggersAtStart: daggersAtStart, daggersInGrave: 2 - daggersAtStart);
-
-                            var newTurns = GetValidTurns_Rec(cards, data);
+                            var newTurns = GetValidTurns_Rec(cards, GetInitialValidTurnsData(cards, moves, daggersAtStart));
                             result.AddRange(newTurns);
 
                             if (newTurns.Any())
@@ -52,7 +45,6 @@
             return result;
         }
 
-        // pitch everything at the start; set Resources in data and remove pitch moves
         private static IEnumerable<Turn> GetValidTurns_Rec(Card[] cards, ValidTurnsData data)
         {
             for (int i = 0; i < data.MovesAvailable.Count; i++)
@@ -84,6 +76,17 @@
                     }
                 }
             }
+        }
+
+        private static ValidTurnsData GetInitialValidTurnsData(Card[] cards, List<Move> moves, int daggersAtStart)
+        {
+            var pitchMoves = moves.Where(m => GetPitch(cards, m) > 0).ToList();
+            var nonPitchMoves = moves.Where(m => GetPitch(cards, m) == 0).ToList();
+            var initialResource = pitchMoves.Sum(m => GetPitch(cards, m));
+
+            return new ValidTurnsData(movesAvailable: nonPitchMoves, resources: initialResource,
+                movesSoFar: pitchMoves, daggersOffChain: daggersAtStart, daggersAtStart: daggersAtStart,
+                daggersInGrave: 2 - daggersAtStart);
         }
 
         private class ValidTurnsData

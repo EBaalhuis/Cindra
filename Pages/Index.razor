@@ -79,7 +79,8 @@
 </EditForm>
 
 <div>
-    <p><h3>Result: @model.Result</h3></p>
+    <p><h3>Result: @model.Result?.OverallMax</h3></p>
+    <p>Turn: @model.Result?.BestTurn</p>
 </div>
 
 @code {
@@ -87,7 +88,7 @@
 
     private void UpdateResult()
     {
-        model.Result = Calculator.GetResult(model.GetCards()).OverallMax;
+        model.Result = Calculator.GetResult(model.GetCards());
     }
 
     private void HandleCard1(string? c)
@@ -120,7 +121,7 @@
         public string? Card2 { get; set; }
         public string? Card3 { get; set; }
         public string? Card4 { get; set; }
-        public int Result { get; set; } = 0;
+        public Result? Result { get; set; }
 
         public IEnumerable<Card> GetCards() 
         {

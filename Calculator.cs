@@ -15,7 +15,6 @@
         private static IEnumerable<Turn> GenerateAllValidTurns(Card[] cards)
         {
             var result = new List<Turn>();
-            //var maxSoFar = 0;
 
             for (int cindraActivations = 0; cindraActivations <= MaxCindraActivations; cindraActivations++)
             {
@@ -27,17 +26,9 @@
                         for (int kunaiAttacks = 0; kunaiAttacks <= maxKunaiAttacks; kunaiAttacks++)
                         {
                             var moves = GetMoves(cards, kunaiAttacks, cindraActivations, (PlayedCards)playedCardsMask);
-                            var maxPossibleWithMoves = new Turn(cards, moves, daggersAtStart, daggersAtEnd: 0)
-                                .GetDamage();
-                            //if (maxPossibleWithMoves < maxSoFar) continue;
 
                             var newTurns = GetValidTurns_Rec(cards, GetInitialValidTurnsData(cards, moves, daggersAtStart));
                             result.AddRange(newTurns);
-
-                            //if (newTurns.Any())
-                            //{
-                            //    maxSoFar = Math.Max(maxSoFar, newTurns.Max(t => t.GetDamage()));
-                            //}
                         }
                     }
                 }
@@ -304,7 +295,6 @@
             };
 
             var moves = cardMoves.Take(cards.Length).ToList();
-            moves.Add(Move.BreakChain);
 
             for (int i = 0; i < kunaiAttacks; i++)
             {
@@ -314,6 +304,7 @@
             for (int i = 0; i < cindraActivations; i++)
             {
                 moves.Add(Move.Cindra);
+                moves.Add(Move.BreakChain);
             }
 
             return moves;

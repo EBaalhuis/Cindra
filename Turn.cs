@@ -20,7 +20,7 @@
             return string.Join(", ", Moves.Select(m => ToDisplay(m)));
         }
 
-        private string ToDisplay(Move m)
+        private static string ToDisplay(Move m)
         {
             return m switch
             {

@@ -17,7 +17,7 @@
             Draconic = draconic;
         }
 
-        public Card(string? s)
+        public Card(string? s, bool draconic)
         {
             if (s != null && s != string.Empty)
             {
@@ -26,7 +26,7 @@
                 Cost = int.Parse(split[2]);
                 GoAgain = s.Contains("GA");
                 Pitch = s.Contains("red") ? 1 : s.Contains("yellow") ? 2 : 3;
-                Draconic = s.Contains("draconic");
+                Draconic = draconic;
             }
         }
 
@@ -39,9 +39,8 @@
                 2 => "yellow",
                 _ => "blue"
             };
-            var draconicText = Draconic ? " (draconic)" : string.Empty;
 
-            return $"{Power} for {Cost}{goAgainText} ({colorText}){draconicText}";
+            return $"{Power} for {Cost}{goAgainText} ({colorText})";
         }
     }
 }

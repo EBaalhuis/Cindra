@@ -79,8 +79,15 @@
 </EditForm>
 
 <div>
-    <p><h3>Result: @model.Result?.OverallMax</h3></p>
-    <p>Turn: @model.Result?.BestTurn</p>
+    @for (int i = 0; i < 3; i++)
+    {
+        <p>
+            Best turn starting with @i daggers:
+            <b>@model.Result?.MaxStartingWithNDaggers[i]</b> - @model.Result?.BestTurnStartingWithNDaggers[i]
+            <br />
+            @model.GetEndDaggersText(i)
+        </p>
+    }
 </div>
 
 @code {
@@ -123,21 +130,27 @@
         public string? Card4 { get; set; }
         public Result? Result { get; set; }
 
+        public string GetEndDaggersText(int i)
+        {
+            if (Result?.DaggersAtEnd[i] == null) return string.Empty;
+            return $"End with {Result?.DaggersAtEnd[i]} daggers";
+        }
+
         public IEnumerable<Card> GetCards() 
         {
-            if (Card1 != null) 
+            if (Card1 != null && Card1 != string.Empty) 
             {
                 yield return new Card(Card1);
             }
-            if (Card2 != null) 
+            if (Card2 != null && Card2 != string.Empty)
             {
                 yield return new Card(Card2);
             }
-            if (Card3 != null) 
+            if (Card3 != null && Card3 != string.Empty)
             {
                 yield return new Card(Card3);
             }
-            if (Card4 != null) 
+            if (Card4 != null && Card4 != string.Empty)
             {
                 yield return new Card(Card4);
             }

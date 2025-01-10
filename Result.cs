@@ -4,28 +4,31 @@
     {
         public Result(List<Turn> validTurns)
         {
-            StartEnd = new int[3][];
-            //for (int start = 0; start < 3; start++)
-            //{
-            //    StartEnd[start] = new int[3];
-            //    for (int end = 0; end < 3; end++)
-            //    {
-            //        var relevantTurns = validTurns
-            //            .Where(t => t.DaggersAtStartOfTurn == start)
-            //            .Where(t => t.DaggersAtEndOfTurn == end);
-
-            //        StartEnd[start][end] = relevantTurns.Any() ?
-            //            relevantTurns.Max(t => t.GetDamage()) : 0;
-            //    }
-            //}
-
             OverallMax = validTurns.Max(t => t.GetDamage());
-            BestTurn = validTurns.First(t => t.GetDamage() == OverallMax).ToString();
+            OverallBestTurn = validTurns.First(t => t.GetDamage() == OverallMax).ToString();
+
+            SetProperties(0, validTurns);
+            SetProperties(1, validTurns);
+            SetProperties(2, validTurns);
         }
 
-        public int[][] StartEnd { get; }
-        //public int OverallMax => StartEnd.SelectMany(rec => rec).Max();
         public int OverallMax { get; }
-        public string BestTurn { get; }
+        public string OverallBestTurn { get; }
+        public int?[] MaxStartingWithNDaggers { get; } = new int?[3];
+        public string?[] BestTurnStartingWithNDaggers { get; } = new string?[3];
+        public int?[] DaggersAtEnd { get; } = new int?[3];
+
+        private void SetProperties(int startingDaggers, List<Turn> validTurns)
+        {
+            var turns = validTurns.Where(t => t.DaggersAtStartOfTurn == startingDaggers);
+            MaxStartingWithNDaggers[startingDaggers] = 
+                turns.Any() ? turns.Max(t => t.GetDamage()) : null;
+
+            var highestDamageTurns = turns.Where(t => t.GetDamage() == MaxStartingWithNDaggers[startingDaggers]);
+            var maxDaggersAtEnd = highestDamageTurns.Any() ? highestDamageTurns.Max(t => t.DaggersAtEndOfTurn) : (int?)null;
+            var bestTurns = highestDamageTurns.Where(t => t.DaggersAtEndOfTurn == maxDaggersAtEnd);
+            BestTurnStartingWithNDaggers[startingDaggers] = bestTurns.FirstOrDefault()?.ToString();
+            DaggersAtEnd[startingDaggers] = maxDaggersAtEnd;
+        }
     }
 }

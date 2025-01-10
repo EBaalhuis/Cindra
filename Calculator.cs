@@ -2,10 +2,11 @@
 {
     public class Calculator
     {
-        public static Result GetResult(IEnumerable<Card> cards)
+        public static Result? GetResult(IEnumerable<Card> cards)
         {
-            var turns = GenerateAllValidTurns(cards.ToArray()).ToList();
+            if (cards.Count() == 0) return null;
 
+            var turns = GenerateAllValidTurns(cards.ToArray()).ToList();
             return new Result(turns);
         }
 
@@ -14,7 +15,7 @@
         private static IEnumerable<Turn> GenerateAllValidTurns(Card[] cards)
         {
             var result = new List<Turn>();
-            var maxSoFar = 0;
+            //var maxSoFar = 0;
 
             for (int cindraActivations = 0; cindraActivations <= MaxCindraActivations; cindraActivations++)
             {
@@ -28,15 +29,15 @@
                             var moves = GetMoves(cards, kunaiAttacks, cindraActivations, (PlayedCards)playedCardsMask);
                             var maxPossibleWithMoves = new Turn(cards, moves, daggersAtStart, daggersAtEnd: 0)
                                 .GetDamage();
-                            if (maxPossibleWithMoves < maxSoFar) continue;
+                            //if (maxPossibleWithMoves < maxSoFar) continue;
 
                             var newTurns = GetValidTurns_Rec(cards, GetInitialValidTurnsData(cards, moves, daggersAtStart));
                             result.AddRange(newTurns);
 
-                            if (newTurns.Any())
-                            {
-                                maxSoFar = Math.Max(maxSoFar, newTurns.Max(t => t.GetDamage()));
-                            }
+                            //if (newTurns.Any())
+                            //{
+                            //    maxSoFar = Math.Max(maxSoFar, newTurns.Max(t => t.GetDamage()));
+                            //}
                         }
                     }
                 }

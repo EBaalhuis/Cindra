@@ -82,8 +82,9 @@
     @for (int i = 0; i < 3; i++)
     {
         <p>
-            Best turn starting with @i daggers:
-            <b>@model.Result?.MaxStartingWithNDaggers[i]</b> - @model.Result?.BestTurnStartingWithNDaggers[i]
+            Best turn starting with @i daggers: <b>@model.Result?.MaxStartingWithNDaggers[i]</b>
+            <br />
+            @model.Result?.BestTurnStartingWithNDaggers[i]
             <br />
             @model.GetEndDaggersText(i)
         </p>

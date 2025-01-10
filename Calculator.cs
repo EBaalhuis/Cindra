@@ -4,7 +4,7 @@
     {
         public static Result? GetResult(IEnumerable<Card> cards)
         {
-            if (cards.Count() == 0) return null;
+            if (!cards.Any()) return null;
 
             var turns = GenerateAllValidTurns(cards.ToArray()).ToList();
             return new Result(turns);

@@ -17,7 +17,24 @@
 
         public override string ToString()
         {
-            return string.Join(", ", Moves.Select(m => m.ToString()));
+            return string.Join(", ", Moves.Select(m => ToDisplay(m)));
+        }
+
+        private string ToDisplay(Move m)
+        {
+            return m switch
+            {
+                Move.PlayCard1 => "play card 1",
+                Move.PlayCard2 => "play card 2",
+                Move.PlayCard3 => "play card 3",
+                Move.PlayCard4 => "play card 4",
+                Move.PitchCard1 => "pitch card 1",
+                Move.PitchCard2 => "pitch card 2",
+                Move.PitchCard3 => "pitch card 3",
+                Move.PitchCard4 => "pitch card 4",
+                Move.BreakChain => "break chain",
+                _ => m.ToString(),
+            };
         }
 
         public int GetDamage()

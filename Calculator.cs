@@ -43,11 +43,9 @@
             {
                 var move = data.MovesAvailable.ElementAt(i);
 
-                //if (move == Move.Kunai && data.MovesAvailable.IndexOf(move) < i) continue;
+                if (move == Move.Kunai && data.MovesAvailable.IndexOf(move) < i) continue;
 
-                //if (move == Move.Cindra && data.DaggersInGrave == 0) continue;
-
-                //if (move == Move.BreakChain && data.MovesSoFar.Contains(Move.Cindra)) continue;
+                if (move == Move.Cindra && data.DaggersInGrave == 0) continue;
 
                 if (!IsValid(cards, move, data)) continue;
 

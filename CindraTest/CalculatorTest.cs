@@ -85,5 +85,19 @@ namespace CindraTest
             var actual = Calculator.GetResult(cards)?.OverallMax;
             Assert.AreEqual(12, actual);
         }
+
+        [TestMethod]
+        public void DaggersAtEnd_ThreeDraconicCards()
+        {
+            var cards = new[]
+            {
+                new Card(3, 0, 1, goAgain: true),
+                new Card(3, 0, 1, goAgain: true),
+                new Card(3, 0, 1, goAgain: true),
+            };
+
+            var actual = Calculator.GetResult(cards)?.DaggersAtEnd[0];
+            Assert.AreEqual(2, actual);
+        }
     }
 }

@@ -17,7 +17,14 @@
 
         public override string ToString()
         {
-            return string.Join(", ", Moves.Select(m => ToDisplay(m)));
+            if (Moves.Last() != Move.BreakChain)
+            {
+                return string.Join(", ", Moves.Select(m => ToDisplay(m)));
+            }
+            else
+            {
+                return string.Join(", ", Moves.Take(Moves.Count - 1).Select(m => ToDisplay(m)));
+            }
         }
 
         private string ToDisplay(Move m)

@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "Cindra.dll": "sha256-qwmNUDDKVIbzjpzZ4dBrx+gqYfJ0yKyqNUGXqvv0620=",
+      "Cindra.dll": "sha256-AWOfW3x6r\/VKSptodgKadN6MejJ5slJdUPBVGcP\/m0w=",
       "Microsoft.AspNetCore.Components.dll": "sha256-zy8ByhC3mArYdDxGEJ\/B+CxuairGfcVEZvieifFtBRk=",
       "Microsoft.AspNetCore.Components.Forms.dll": "sha256-hRX7\/OAzRCm00NCbjMKw5Ks6OmIsAdCmaglT36XT0b4=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-1yiR8H++RIIDPRy0mNo+E+VTgcqDw\/p\/G2mH63fdz\/w=",

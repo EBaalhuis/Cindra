@@ -20,18 +20,20 @@
             return string.Join(", ", Moves.Select(m => ToDisplay(m)));
         }
 
-        private static string ToDisplay(Move m)
+        private string ToDisplay(Move m)
         {
             return m switch
             {
-                Move.PlayCard1 => "play card 1",
-                Move.PlayCard2 => "play card 2",
-                Move.PlayCard3 => "play card 3",
-                Move.PlayCard4 => "play card 4",
-                Move.PitchCard1 => "pitch card 1",
-                Move.PitchCard2 => "pitch card 2",
-                Move.PitchCard3 => "pitch card 3",
-                Move.PitchCard4 => "pitch card 4",
+                Move.PlayCard1 => $"play card {Cards[0].IndexOnPage}",
+                Move.PlayCard2 => $"play card {Cards[1].IndexOnPage}",
+                Move.PlayCard3 => $"play card {Cards[2].IndexOnPage}",
+                Move.PlayCard4 => $"play card {Cards[3].IndexOnPage}",
+                Move.PlayCard5 => $"play card {Cards[4].IndexOnPage}",
+                Move.PitchCard1 => $"pitch card {Cards[0].IndexOnPage}",
+                Move.PitchCard2 => $"pitch card {Cards[1].IndexOnPage}",
+                Move.PitchCard3 => $"pitch card {Cards[2].IndexOnPage}",
+                Move.PitchCard4 => $"pitch card {Cards[3].IndexOnPage}",
+                Move.PitchCard5 => $"pitch card {Cards[4].IndexOnPage}",
                 Move.BreakChain => "break chain",
                 _ => m.ToString(),
             };
@@ -50,6 +52,7 @@
                 Move.PlayCard2 => Cards[1].Power,
                 Move.PlayCard3 => Cards[2].Power,
                 Move.PlayCard4 => Cards[3].Power,
+                Move.PlayCard5 => Cards[4].Power,
                 Move.Kunai => 1,
                 _ => 0,
             };

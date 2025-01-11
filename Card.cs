@@ -7,17 +7,20 @@
         public int Pitch { get; }
         public bool GoAgain { get; }
         public bool Draconic { get; }
+        public bool IsInArsenal { get; }
+        public int IndexOnPage { get; }
 
-        public Card(int power, int cost, int pitch, bool goAgain, bool draconic=true)
+        public Card(int power, int cost, int pitch, bool goAgain, bool draconic=true, bool isInArsenal=false)
         {
             Power = power;
             Cost = cost;
             Pitch = pitch;
             GoAgain = goAgain;
             Draconic = draconic;
+            IsInArsenal = isInArsenal;
         }
 
-        public Card(string? s, bool draconic)
+        public Card(string? s, bool draconic, bool isInArsenal = false, int indexOnPage = 0)
         {
             if (s != null && s != string.Empty)
             {
@@ -27,6 +30,8 @@
                 GoAgain = s.Contains("GA");
                 Pitch = s.Contains("red") ? 1 : s.Contains("yellow") ? 2 : 3;
                 Draconic = draconic;
+                IsInArsenal |= isInArsenal;
+                IndexOnPage = indexOnPage;
             }
         }
 

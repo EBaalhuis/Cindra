@@ -138,6 +138,7 @@
                 Move.PlayCard2 => cards.Length > 1,
                 Move.PlayCard3 => cards.Length > 2,
                 Move.PlayCard4 => cards.Length > 3,
+                Move.PlayCard5 => cards.Length > 4,
                 _ => true,
             };
         }
@@ -156,6 +157,7 @@
                 Move.PlayCard2 => data.ActionPoint,
                 Move.PlayCard3 => data.ActionPoint,
                 Move.PlayCard4 => data.ActionPoint,
+                Move.PlayCard5 => data.ActionPoint,
                 _ => true,
             };
         }
@@ -169,6 +171,7 @@
                 Move.PlayCard2 => cards[1].Cost,
                 Move.PlayCard3 => cards[2].Cost,
                 Move.PlayCard4 => cards[3].Cost,
+                Move.PlayCard5 => cards[4].Cost,
                 Move.Cindra => Math.Max(3 - draconicLinks, 0),
                 _ => 0,
             };
@@ -239,9 +242,9 @@
             return move switch
             {
                 Move.Kunai => oldResources - 1,
-                Move.PlayCard1 or Move.PlayCard2 or Move.PlayCard3 or Move.PlayCard4 or Move.Cindra =>
+                Move.PlayCard1 or Move.PlayCard2 or Move.PlayCard3 or Move.PlayCard4 or Move.PlayCard5 or Move.Cindra =>
                     oldResources - GetCost(cards, move, draconicLinks),
-                Move.PitchCard1 or Move.PitchCard2 or Move.PitchCard3 or Move.PitchCard4 =>
+                Move.PitchCard1 or Move.PitchCard2 or Move.PitchCard3 or Move.PitchCard4 or Move.PitchCard5 =>
                     oldResources + GetPitch(cards, move),
                 _ => oldResources,
             };
@@ -256,6 +259,7 @@
                 Move.PlayCard2 => cards[1].Draconic ? oldDraconicLinks + 1 : oldDraconicLinks,
                 Move.PlayCard3 => cards[2].Draconic ? oldDraconicLinks + 1 : oldDraconicLinks,
                 Move.PlayCard4 => cards[3].Draconic ? oldDraconicLinks + 1 : oldDraconicLinks,
+                Move.PlayCard5 => cards[4].Draconic ? oldDraconicLinks + 1 : oldDraconicLinks,
                 Move.BreakChain => 0,
                 _ => oldDraconicLinks,
             };
@@ -269,26 +273,14 @@
                 Move.PlayCard2 => cards[1].GoAgain,
                 Move.PlayCard3 => cards[2].GoAgain,
                 Move.PlayCard4 => cards[3].GoAgain,
+                Move.PlayCard5 => cards[4].GoAgain,
                 _ => oldActionPoint,
             };
         }
 
         private static List<Move> GetMoves(Card[] cards, int kunaiAttacks, int cindraActivations, PlayedCards playedCards)
         {
-            var card1Move = playedCards.HasFlag(PlayedCards.Card1) ? Move.PlayCard1 : Move.PitchCard1;
-            var card2Move = playedCards.HasFlag(PlayedCards.Card2) ? Move.PlayCard2 : Move.PitchCard2;
-            var card3Move = playedCards.HasFlag(PlayedCards.Card3) ? Move.PlayCard3 : Move.PitchCard3;
-            var card4Move = playedCards.HasFlag(PlayedCards.Card4) ? Move.PlayCard4 : Move.PitchCard4;
-
-            var cardMoves = new List<Move>
-            {
-                card1Move,
-                card2Move,
-                card3Move,
-                card4Move,
-            };
-
-            var moves = cardMoves.Take(cards.Length).ToList();
+            var moves = GetCardMoves(cards, playedCards).Take(cards.Length).ToList();
 
             for (int i = 0; i < kunaiAttacks; i++)
             {
@@ -304,6 +296,25 @@
             return moves;
         }
 
+        private static IEnumerable<Move> GetCardMoves(Card[] cards, PlayedCards playedCards)
+        {
+            for (int i = 0; i < cards.Length; i++)
+            {
+                if (playedCards.HasFlag(PlayedCardsNr[i]))
+                {
+                    yield return PlayCardMoves[i];
+                }
+                else if (!cards[i].IsInArsenal)
+                {
+                    yield return PitchCardMoves[i];
+                }
+            }
+        }
+
+        private static Move[] PlayCardMoves => new[] { Move.PlayCard1, Move.PlayCard2, Move.PlayCard3, Move.PlayCard4, Move.PlayCard5 };
+        private static Move[] PitchCardMoves => new[] { Move.PitchCard1, Move.PitchCard2, Move.PitchCard3, Move.PitchCard4, Move.PitchCard5 };
+        private static PlayedCards[] PlayedCardsNr => new[] { PlayedCards.Card1, PlayedCards.Card2, PlayedCards.Card3, PlayedCards.Card4, PlayedCards.Card5 };
+
         [Flags]
         private enum PlayedCards
         {
@@ -311,7 +322,8 @@
             Card1 = 1,
             Card2 = 2,
             Card3 = 4,
-            Card4 = 8
+            Card4 = 8,
+            Card5 = 16,
         }
     }
 }

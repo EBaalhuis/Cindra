@@ -87,6 +87,22 @@ namespace CindraTest
         }
 
         [TestMethod]
+        public void FiveCards()
+        {
+            var cards = new[]
+            {
+                new Card(3, 0, 1, goAgain: true),
+                new Card(3, 0, 1, goAgain: true),
+                new Card(3, 0, 1, goAgain: true),
+                new Card(3, 0, 1, goAgain: true),
+                new Card(3, 0, 1, goAgain: true, isInArsenal: true),
+            };
+
+            var actual = Calculator.GetResult(cards)?.OverallMax;
+            Assert.AreEqual(15, actual);
+        }
+
+        [TestMethod]
         public void DaggersAtEnd_ThreeDraconicCards()
         {
             var cards = new[]
@@ -98,6 +114,18 @@ namespace CindraTest
 
             var actual = Calculator.GetResult(cards)?.DaggersAtEnd[0];
             Assert.AreEqual(2, actual);
+        }
+
+        [TestMethod]
+        public void CardInArsenal_CantBePitched()
+        {
+            var cards = new[]
+            {
+                new Card(1, 0, 3, goAgain: true, isInArsenal: true),
+            };
+
+            var actual = Calculator.GetResult(cards)?.OverallMax;
+            Assert.AreEqual(1, actual);
         }
     }
 }
